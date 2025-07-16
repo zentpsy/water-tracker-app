@@ -126,7 +126,7 @@ else:
 st.markdown(
     """
     <style>
-    div.stButton > button:first-child {
+      div.save-button > button {
         background-color: #2196F3;
         color: white;
         font-size: 18px;
@@ -137,7 +137,7 @@ st.markdown(
         min-width: 200px;  /* บังคับความกว้างขั้นต่ำ */
         transition: background-color 0.3s ease;
     }
-    div.stButton > button:first-child:hover {
+    div.save-button > button:hover {
         background-color: #1976D2;
         cursor: pointer;
     }
@@ -148,7 +148,7 @@ st.markdown(
 
 
 # === ปุ่มบันทึก
-if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
+if <div class="save-button">st.button("💾 บันทึกการใช้น้ำ")<div class="save-button"> and current_meter > previous_meter:
     insert_result = supabase.table("water_usage").insert({
         "address": selected_address,
         "previous_meter": previous_meter,
