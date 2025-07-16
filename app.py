@@ -35,21 +35,7 @@ with col1:
 
 with col2:
     if st.button("+"):
-        with st.form("add_house_form", clear_on_submit=True):
-            new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
-            submitted = st.form_submit_button("✅ เพิ่ม")
-            if submitted:
-                if new_address.strip() == "":
-                    st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
-                elif new_address.strip() in address_list:
-                    st.warning("⚠️ บ้านนี้มีอยู่แล้วในระบบ")
-                else:
-                    result = supabase.table("houses").insert({
-                        "address": new_address.strip(),
-                        "previous_meter": 0
-                    }).execute()
-                    st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว กรุณา Reload หน้า")
-                    st.experimental_rerun()
+        st.write("กดปุ่ม + แล้ว")  # ทดสอบว่าแสดงหรือไม่
 
 
 # === ค้นหาบ้านที่เลือก ===
