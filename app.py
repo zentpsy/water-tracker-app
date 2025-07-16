@@ -49,7 +49,7 @@ with col2:
         </style>
     """, unsafe_allow_html=True)
     if st.button("เพิ่มบ้าน +"):
-        st.session_state.show_add_form = True
+        st.session_state.show_add_form = not st.session_state.show_add_form
 
 # === ฟอร์มเพิ่มบ้านใหม่ ===
 if st.session_state.show_add_form:
