@@ -126,7 +126,7 @@ else:
 st.markdown(
     """
     <style>
-    div.save-button > button {
+    div.stButton > button:first-child:hover {
         background-color: #2196F3;
         color: white;
         font-size: 18px;
@@ -137,7 +137,7 @@ st.markdown(
         min-width: 100px;
         transition: background-color 0.3s ease;
     }
-    div.save-button > button:hover {
+    div.stButton > button:first-child:hover {
         background-color: #1976D2;
         cursor: pointer;
     }
