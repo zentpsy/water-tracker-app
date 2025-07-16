@@ -39,7 +39,7 @@ with col2:
         """
         <style>
         div.stButton > button:first-child {
-            margin-top: 13px;
+            margin-top: 11px;
             width: 40px;
             height: 38px;
             font-size: 24px;
@@ -49,7 +49,7 @@ with col2:
         """,
         unsafe_allow_html=True,
     )
-    if st.button("+"):
+    if st.button("เพิ่มบ้าน +"):
         st.write("กดปุ่ม + แล้ว")
         
 # === ค้นหาบ้านที่เลือก ===
