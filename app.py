@@ -15,9 +15,10 @@ def calculate_price(units):
     return units * 10  # หน่วยละ 10 บาท (ปรับได้ภายหลัง)
 
 # === ดึงข้อมูลบ้านจาก Supabase ===
-@st.cache_data
 def load_houses():
     res = supabase.table("houses").select("*").execute()
+    st.write("Raw response from Supabase:", res)
+    st.write("Data:", res.data)
     return res.data
 
 houses = load_houses()
@@ -25,6 +26,7 @@ houses = load_houses()
 if not houses:
     st.warning("⚠️ ยังไม่มีข้อมูลบ้านใน Supabase")
     st.stop()
+
 
 # === ปุ่มสร้างข้อมูลบ้านตัวอย่าง ===
 with st.expander("🛠 กดเพื่อสร้างข้อมูลบ้านตัวอย่าง (เฉพาะตอนทดสอบ)"):
