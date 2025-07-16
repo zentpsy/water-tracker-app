@@ -34,7 +34,7 @@ with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 with col2:
-    if st.button("+"):
+    if st.button(" + "):
         with st.form("add_house_form", clear_on_submit=True):
             new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
             submitted = st.form_submit_button("✅ เพิ่ม")
