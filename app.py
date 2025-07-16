@@ -126,18 +126,18 @@ else:
 st.markdown(
     """
     <style>
-    div.stButton > button:first-child {
+    div.save-button > button {
         background-color: #2196F3;
         color: white;
         font-size: 18px;
         font-weight: bold;
-        padding: 12px 36px;  /* เพิ่ม padding ซ้าย-ขวา */
+        padding: 12px 36px;
         border-radius: 8px;
         border: none;
-        min-width: 200px;  /* บังคับความกว้างขั้นต่ำ */
+        min-width: 200px;
         transition: background-color 0.3s ease;
     }
-    div.stButton > button:first-child:hover {
+    div.save-button > button:hover {
         background-color: #1976D2;
         cursor: pointer;
     }
@@ -146,8 +146,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # === ปุ่มบันทึก
+st.markdown('<div class="save-button">', unsafe_allow_html=True)
+
 if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
     insert_result = supabase.table("water_usage").insert({
         "address": selected_address,
@@ -162,4 +163,6 @@ if st.button("💾 บันทึกการใช้น้ำ") and current_m
         "previous_meter": current_meter
     }).eq("id", selected_house["id"]).execute()
 
-    st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧"))
+    st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
+
+st.markdown('</div>', unsafe_allow_html=True)
