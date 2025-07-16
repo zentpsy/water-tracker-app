@@ -56,7 +56,10 @@ if add_new:
     with st.form("add_house_form", clear_on_submit=True):
         new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
         new_previous_meter = st.number_input("📟 ค่ามิเตอร์ล่าสุด", min_value=0, step=1)
+        
         submitted = st.form_submit_button("✅ เพิ่มบ้านใหม่")
+        st.write("submitted:", submitted)  # ← ตรวจสอบว่าปุ่มทำงานมั้ย
+
         if submitted:
             if new_address.strip() == "":
                 st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
