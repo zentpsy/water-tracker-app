@@ -127,13 +127,14 @@ st.markdown(
     """
     <style>
     div.stButton > button:first-child {
-        background-color: #2196F3;  /* สีฟ้า */
+        background-color: #2196F3;
         color: white;
         font-size: 18px;
         font-weight: bold;
-        padding: 10px 13px;
+        padding: 12px 36px;  /* เพิ่ม padding ซ้าย-ขวา */
         border-radius: 8px;
         border: none;
+        min-width: 250px;  /* บังคับความกว้างขั้นต่ำ */
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
@@ -144,6 +145,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 # === ปุ่มบันทึก
 if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
