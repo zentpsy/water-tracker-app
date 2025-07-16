@@ -58,8 +58,14 @@ current_meter = st.number_input("📥 ค่ามิเตอร์ปัจจ
 
 # === แสดงค่ามิเตอร์ล่าสุด + ปัจจุบัน (บรรทัดเดียว)
 st.markdown(
-    f"**🔁 มิเตอร์ล่าสุด:** {previous_meter} &nbsp;&nbsp;|&nbsp;&nbsp; **📥 ค่ามิเตอร์ปัจจุบัน:** {int(current_meter)}"
+    f"""
+    <div style='background-color:#e6f4ff; padding:10px 15px; border-radius:10px; border:1px solid #cce0ff; font-size:16px;'>
+        🔁 มิเตอร์ล่าสุด: <b>{previous_meter}</b> &nbsp;&nbsp;|&nbsp;&nbsp; 📥 ค่ามิเตอร์ปัจจุบัน: <b>{int(current_meter)}</b>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
+
 
 # === แสดงผลแบบเรียลไทม์
 if current_meter > previous_meter:
