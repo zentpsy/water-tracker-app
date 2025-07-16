@@ -41,7 +41,7 @@ with col2:
         div.stButton > button:first-child {
             margin-top: 24px;
             width: 40px;
-            height: 38px;
+            height: 40px;
             font-size: 24px;
             border-radius: 6px;
         }
