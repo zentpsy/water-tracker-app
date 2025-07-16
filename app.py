@@ -65,13 +65,18 @@ if add_new:
             else:
                 result = supabase.table("houses").insert({
                     "address": new_address.strip(),
-                    "previous_meter": new_previous_meter
+                    "previous_meter": float(new_previous_meter)
                 }).execute()
-                if result.status_code == 201:
-                    st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว กำลังโหลดข้อมูลใหม่...")
-                    st.experimental_rerun()
-                else:
-                    st.error("❌ เกิดข้อผิดพลาดในการเพิ่มบ้าน")
+
+                st.write({
+                    "ส่งข้อมูลไป": {
+                        "address": new_address.strip(),
+                        "previous_meter": float(new_previous_meter)
+                    }
+                })
+
+                st.write("ผลลัพธ์ insert:", result)
+
 
 # === ค้นหาบ้านที่เลือก ===
 selected_house = next(
