@@ -34,10 +34,18 @@ with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 with col2:
-    if st.button("\u002B เพิ่มบ้าน"):
-        st.write("กดปุ่ม + แล้ว")  # ทดสอบว่าแสดงหรือไม่
-
-
+    # ใช้ HTML button พร้อมปรับ style margin-top ให้เท่ากับ dropdown
+    add_button = st.markdown("""
+        <button style="
+            margin-top: 23px;  /* ปรับเลขนี้ตามตำแหน่ง dropdown */
+            width: 40px;
+            height: 38px;
+            font-size: 24px;
+            border-radius: 6px;
+            cursor: pointer;
+        ">+</button>
+        """, unsafe_allow_html=True)
+    
 # === ค้นหาบ้านที่เลือก ===
 selected_house = next(
     (h for h in houses if h.get("address", "").strip() == selected_address.strip()),
