@@ -31,7 +31,7 @@ if "show_add_form" not in st.session_state:
 
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
-col1, col2 = st.columns([9, 1])
+col1, col2 = st.columns([5,1])
 
 with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
@@ -39,18 +39,21 @@ with col1:
 with col2:
     st.markdown("""
         <style>
-        div.stButton > button:first-child {
+        .add-button-container button {
             margin-top: 11px;
-            width: 120px;
-            height: 38px;
-            font-size: 18px;
-            border-radius: 6px;
+            width: 120px !important;
+            height: 38px !important;
+            font-size: 18px !important;
+            border-radius: 6px !important;
         }
         </style>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+
+    st.markdown('<div class="add-button-container">', unsafe_allow_html=True)
     if st.button("เพิ่มที่อยู่ +"):
         st.session_state.show_add_form = not st.session_state.show_add_form
-
+    st.markdown('</div>', unsafe_allow_html=True)
+    
 # === ฟอร์มเพิ่มบ้านใหม่ ===
 if st.session_state.show_add_form:
     with st.form("add_house_form", clear_on_submit=True):
