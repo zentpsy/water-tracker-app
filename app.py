@@ -2,21 +2,22 @@ import streamlit as st
 from supabase import create_client
 from datetime import datetime
 
-# --- Supabase config ---
-SUPABASE_URL = st.secrets["supabase_url"]
-SUPABASE_KEY = st.secrets["supabase_key"]
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+st.title("🔧 DEBUG MODE")
 
-# --- โหลดข้อมูลบ้าน ---
-@st.cache_data
-def load_houses():
+try:
+    st.write("📌 Connecting to Supabase...")
+    SUPABASE_URL = st.secrets["supabase_url"]
+    SUPABASE_KEY = st.secrets["supabase_key"]
+    st.write("✅ Found secrets")
+
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+    st.write("✅ Supabase client created")
+
     res = supabase.table("houses").select("*").execute()
-    return res.data
+    st.write("📦 houses:", res.data)
 
-houses = load_houses()
-
-# 🔍 Debug ดูว่า fetch ได้หรือไม่
-st.write("📦 houses data:", houses)
+except Exception as e:
+    st.error(f"❌ ERROR: {e}")
 
 if not houses:
     st.error("ไม่พบข้อมูลบ้านใน Supabase!")
