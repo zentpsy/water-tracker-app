@@ -48,7 +48,7 @@ with col2:
         }
         </style>
     """, unsafe_allow_html=True)
-    if st.button(" + "):
+    if st.button("เพิ่มที่อยู่ +"):
         st.session_state.show_add_form = not st.session_state.show_add_form
 
 # === ฟอร์มเพิ่มบ้านใหม่ ===
