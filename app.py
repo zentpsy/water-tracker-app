@@ -34,7 +34,7 @@ with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 with col2:
-    if st.button("+"):
+    if st.button("\u002B"):
         st.write("กดปุ่ม + แล้ว")  # ทดสอบว่าแสดงหรือไม่
 
 
