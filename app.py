@@ -70,12 +70,14 @@ if st.session_state.show_add_form:
                 }
                 try:
                     result = supabase.table("houses").insert(data_to_insert).execute()
-                    if result.status_code == 201:
-                        st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว กำลังโหลดข้อมูลใหม่...")
+
+                    if result.data:
+                        st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว")
                         st.session_state.show_add_form = False
                         st.experimental_rerun()
                     else:
-                        st.error(f"❌ เพิ่มบ้านไม่สำเร็จ (code {result.status_code})")
+                        st.error(f"❌ เพิ่มบ้านไม่สำเร็จ: {result.error}")
+
                 except Exception as e:
                     st.error(f"❌ เกิดข้อผิดพลาดขณะ insert: {e}")
 
