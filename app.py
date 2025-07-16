@@ -74,7 +74,7 @@ if st.session_state.show_add_form:
                     if result.data:
                         st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว")
                         st.session_state.show_add_form = False
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.error(f"❌ เพิ่มบ้านไม่สำเร็จ: {result.error}")
 
