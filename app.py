@@ -40,7 +40,7 @@ with col2:
         <style>
         div.stButton > button:first-child {
             margin-top: 11px;
-            width: 70px;
+            width: 120px;
             height: 38px;
             font-size: 24px;
             border-radius: 6px;
