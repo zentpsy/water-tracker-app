@@ -17,8 +17,6 @@ def calculate_price(units):
 # === ดึงข้อมูลบ้านจาก Supabase ===
 def load_houses():
     res = supabase.table("houses").select("*").execute()
-    st.write("Raw response from Supabase:", res)
-    st.write("Data:", res.data)
     return res.data
 
 houses = load_houses()
