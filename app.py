@@ -122,22 +122,23 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
+# --- เพิ่ม CSS ปรับปุ่มบันทึกที่นี่ ---
 st.markdown(
     """
     <style>
-    .save-button-container button {
-        background-color: #2196F3 !important;
-        color: white !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
-        padding: 12px 36px !important;
-        border-radius: 8px !important;
-        border: none !important;
-        min-width: 220px;
+    div.stButton > button:first-child {
+        background-color: #2196F3;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 12px 36px;  /* เพิ่ม padding ซ้าย-ขวา */
+        border-radius: 8px;
+        border: none;
+        min-width: 200px;  /* บังคับความกว้างขั้นต่ำ */
         transition: background-color 0.3s ease;
     }
-    .save-button-container button:hover {
-        background-color: #1976D2 !important;
+    div.stButton > button:first-child:hover {
+        background-color: #1976D2;
         cursor: pointer;
     }
     </style>
@@ -145,23 +146,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-with st.container():
-    st.markdown('<div class="save-button-container">', unsafe_allow_html=True)
 
-    if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
-        insert_result = supabase.table("water_usage").insert({
-            "address": selected_address,
-            "previous_meter": previous_meter,
-            "current_meter": current_meter,
-            "units_used": units_used,
-            "price": price,
-            "created_at": datetime.utcnow().isoformat()
-        }).execute()
+# === ปุ่มบันทึก
+if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
+    insert_result = supabase.table("water_usage").insert({
+        "address": selected_address,
+        "previous_meter": previous_meter,
+        "current_meter": current_meter,
+        "units_used": units_used,
+        "price": price,
+        "created_at": datetime.utcnow().isoformat()
+    }).execute()
 
-        update_result = supabase.table("houses").update({
-            "previous_meter": current_meter
-        }).eq("id", selected_house["id"]).execute()
+    update_result = supabase.table("houses").update({
+        "previous_meter": current_meter
+    }).eq("id", selected_house["id"]).execute()
 
-        st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
-
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧"))
