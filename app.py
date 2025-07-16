@@ -122,6 +122,29 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
+# --- เพิ่ม CSS ปรับปุ่มบันทึกที่นี่ ---
+st.markdown(
+    """
+    <style>
+    div.stButton > button:first-child {
+        background-color: #2196F3;  /* สีฟ้า */
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 24px;
+        border-radius: 8px;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #1976D2;
+        cursor: pointer;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # === ปุ่มบันทึก
 if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
     insert_result = supabase.table("water_usage").insert({
