@@ -147,22 +147,20 @@ st.markdown(
 )
 
 # === ปุ่มบันทึก
-st.markdown('<div class="save-button">', unsafe_allow_html=True)
+col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
+with col2:
+    if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
+        insert_result = supabase.table("water_usage").insert({
+            "address": selected_address,
+            "previous_meter": previous_meter,
+            "current_meter": current_meter,
+            "units_used": units_used,
+            "price": price,
+            "created_at": datetime.utcnow().isoformat()
+        }).execute()
 
-if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
-    insert_result = supabase.table("water_usage").insert({
-        "address": selected_address,
-        "previous_meter": previous_meter,
-        "current_meter": current_meter,
-        "units_used": units_used,
-        "price": price,
-        "created_at": datetime.utcnow().isoformat()
-    }).execute()
+        update_result = supabase.table("houses").update({
+            "previous_meter": current_meter
+        }).eq("id", selected_house["id"]).execute()
 
-    update_result = supabase.table("houses").update({
-        "previous_meter": current_meter
-    }).eq("id", selected_house["id"]).execute()
-
-    st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
-
-st.markdown('</div>', unsafe_allow_html=True)
+        st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
