@@ -8,7 +8,7 @@ SUPABASE_KEY = st.secrets["supabase_key"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 st.set_page_config("💧 ระบบค่าน้ำ", layout="centered")
-st.title("💧 ระบบค่าน้ำตามบ้าน")
+st.title("💧คำนวณค่าน้ำ")
 
 # === ฟังก์ชันคำนวณค่าน้ำ ===
 def calculate_price(units):
@@ -27,7 +27,30 @@ if not houses:
 
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
-selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
+# แบ่งเป็น 2 คอลัมน์: dropdown + ปุ่มเพิ่มบ้าน
+col1, col2 = st.columns([5, 1])
+
+with col1:
+    selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
+
+with col2:
+    if st.button("➕ เพิ่มบ้านใหม่"):
+        with st.form("add_house_form", clear_on_submit=True):
+            new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
+            submitted = st.form_submit_button("✅ เพิ่ม")
+            if submitted:
+                if new_address.strip() == "":
+                    st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
+                elif new_address.strip() in address_list:
+                    st.warning("⚠️ บ้านนี้มีอยู่แล้วในระบบ")
+                else:
+                    result = supabase.table("houses").insert({
+                        "address": new_address.strip(),
+                        "previous_meter": 0
+                    }).execute()
+                    st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว กรุณา Reload หน้า")
+                    st.experimental_rerun()
+
 
 # === ค้นหาบ้านที่เลือก ===
 selected_house = next(
