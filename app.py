@@ -15,6 +15,7 @@ def calculate_price(units):
     return units * 10  # หน่วยละ 10 บาท (ปรับได้ภายหลัง)
 
 # === ดึงข้อมูลบ้านจาก Supabase ===
+@st.cache_data(ttl=60)
 def load_houses():
     res = supabase.table("houses").select("*").execute()
     return res.data
@@ -27,6 +28,7 @@ if not houses:
 
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
+
 # แบ่งเป็น 2 คอลัมน์: dropdown + ปุ่มเพิ่มบ้าน
 col1, col2 = st.columns([4, 1])
 
@@ -34,7 +36,6 @@ with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 with col2:
-    # ใส่ padding-top เพื่อดันปุ่มลงมาให้เท่า dropdown
     st.markdown(
         """
         <style>
@@ -42,16 +43,37 @@ with col2:
             margin-top: 11px;
             width: 120px;
             height: 38px;
-            font-size: 24px;
+            font-size: 18px;
             border-radius: 6px;
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
-    if st.button("เพิ่มบ้าน +"):
-        st.write("กดปุ่ม + แล้ว")
-        
+    add_new = st.button("เพิ่มบ้าน +")
+
+# แสดงฟอร์มเพิ่มบ้าน ถ้ากดปุ่มเพิ่มบ้าน
+if add_new:
+    with st.form("add_house_form", clear_on_submit=True):
+        new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
+        new_previous_meter = st.number_input("📟 ค่ามิเตอร์ล่าสุด", min_value=0, step=1)
+        submitted = st.form_submit_button("✅ เพิ่มบ้านใหม่")
+        if submitted:
+            if new_address.strip() == "":
+                st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
+            elif new_address.strip() in address_list:
+                st.warning("⚠️ บ้านนี้มีอยู่แล้วในระบบ")
+            else:
+                result = supabase.table("houses").insert({
+                    "address": new_address.strip(),
+                    "previous_meter": new_previous_meter
+                }).execute()
+                if result.status_code == 201:
+                    st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว กำลังโหลดข้อมูลใหม่...")
+                    st.experimental_rerun()
+                else:
+                    st.error("❌ เกิดข้อผิดพลาดในการเพิ่มบ้าน")
+
 # === ค้นหาบ้านที่เลือก ===
 selected_house = next(
     (h for h in houses if h.get("address", "").strip() == selected_address.strip()),
@@ -67,7 +89,7 @@ else:
 # === กรอกค่ามิเตอร์ปัจจุบัน ===
 current_meter = st.number_input("📥 ค่ามิเตอร์ปัจจุบัน", min_value=previous_meter, step=1)
 
-# === แสดงค่ามิเตอร์ล่าสุด + ปัจจุบัน (บรรทัดเดียว)
+# === แสดงค่ามิเตอร์ล่าสุด + ปัจจุบัน (บรรทัดเดียว) ===
 st.markdown(
     f"""
     <div style='background-color:#e6f4ff; padding:10px 15px; border-radius:10px; border:1px solid #cce0ff; font-size:16px;'>
@@ -77,8 +99,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
-# === แสดงผลแบบเรียลไทม์
+# === แสดงผลแบบเรียลไทม์ ===
 if current_meter > previous_meter:
     units_used = current_meter - previous_meter
     price = calculate_price(units_used)
@@ -90,9 +111,8 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
-# === ปุ่มบันทึก
+# === ปุ่มบันทึก ===
 if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
-    # บันทึกลง water_usage
     insert_result = supabase.table("water_usage").insert({
         "address": selected_address,
         "previous_meter": previous_meter,
@@ -101,12 +121,10 @@ if st.button("💾 บันทึกการใช้น้ำ") and current_m
         "price": price,
         "created_at": datetime.utcnow().isoformat()
     }).execute()
-    st.write(insert_result)
 
-    # อัปเดต previous_meter ใน houses
     update_result = supabase.table("houses").update({
         "previous_meter": current_meter
     }).eq("id", selected_house["id"]).execute()
-    st.write(update_result)
 
     st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used} หน่วย = {price:.2f} บาท 💧")
+
