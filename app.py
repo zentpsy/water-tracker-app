@@ -135,6 +135,7 @@ st.markdown(
         border-radius: 8px;
         border: none;
         min-width: 250px;
+        width: 100%;  /* ทำให้ยาวเต็มคอลัมน์ */
         transition: background-color 0.3s ease;
     }
 
@@ -146,8 +147,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-
 
 # === ปุ่มบันทึก
 col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
