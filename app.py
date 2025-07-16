@@ -126,7 +126,6 @@ else:
 st.markdown(
     """
     <style>
-    /* style ปกติของปุ่ม */
     div.stButton > button:first-child {
         background-color: #2196F3;
         color: white;
@@ -139,7 +138,6 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
 
-    /* style เมื่อ hover */
     div.stButton > button:first-child:hover {
         background-color: #1976D2;
         cursor: pointer;
@@ -148,6 +146,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 # === ปุ่มบันทึก
