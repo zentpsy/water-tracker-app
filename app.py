@@ -39,7 +39,7 @@ with col2:
         """
         <style>
         div.stButton > button:first-child {
-            margin-top: 21px;
+            margin-top: 17px;
             width: 40px;
             height: 38px;
             font-size: 24px;
