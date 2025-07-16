@@ -39,9 +39,9 @@ with col2:
         """
         <style>
         div.stButton > button:first-child {
-            margin-top: 24px;
+            margin-top: 27px;
             width: 40px;
-            height: 40px;
+            height: 38px;
             font-size: 24px;
             border-radius: 6px;
         }
