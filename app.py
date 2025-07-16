@@ -10,16 +10,9 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 st.set_page_config("💧 ระบบค่าน้ำ", layout="centered")
 st.title("💧 ระบบค่าน้ำตามบ้าน")
 
-# === ปุ่มสร้างข้อมูลบ้านตัวอย่าง ===
-with st.expander("🛠 กดเพื่อสร้างข้อมูลบ้านตัวอย่าง (เฉพาะตอนทดสอบ)"):
-    if st.button("🔧 สร้างข้อมูลบ้านตัวอย่าง"):
-        demo_data = [
-            {"address": "บ้านเลขที่ 101", "previous_meter": 0},
-            {"address": "บ้านเลขที่ 102", "previous_meter": 45},
-            {"address": "บ้านเลขที่ 103", "previous_meter": 88},
-        ]
-        result = supabase.table("houses").insert(demo_data).execute()
-        st.success("✅ เพิ่มข้อมูลบ้านตัวอย่างแล้ว กรุณา reload หน้าเว็บ")
+# === ฟังก์ชันคำนวณค่าน้ำ ===
+def calculate_price(units):
+    return units * 10  # หน่วยละ 10 บาท (ปรับได้ภายหลัง)
 
 # === ดึงข้อมูลบ้านจาก Supabase ===
 @st.cache_data
@@ -32,6 +25,18 @@ houses = load_houses()
 if not houses:
     st.warning("⚠️ ยังไม่มีข้อมูลบ้านใน Supabase")
     st.stop()
+
+# === ปุ่มสร้างข้อมูลบ้านตัวอย่าง ===
+with st.expander("🛠 กดเพื่อสร้างข้อมูลบ้านตัวอย่าง (เฉพาะตอนทดสอบ)"):
+    if st.button("🔧 สร้างข้อมูลบ้านตัวอย่าง"):
+        demo_data = [
+            {"address": "บ้านเลขที่ 101", "previous_meter": 0},
+            {"address": "บ้านเลขที่ 102", "previous_meter": 45},
+            {"address": "บ้านเลขที่ 103", "previous_meter": 88},
+        ]
+        result = supabase.table("houses").insert(demo_data).execute()
+        st.write(result)  # แสดงผลลัพธ์การ insert เพื่อดู error
+        st.success("✅ เพิ่มข้อมูลบ้านตัวอย่างแล้ว กรุณา reload หน้าเว็บ")
 
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
@@ -48,7 +53,7 @@ else:
     st.stop()
 
 # === กรอกมิเตอร์ปัจจุบัน ===
-current_meter = st.number_input("📥 ค่ามิเตอร์ปัจจุบัน", min_value=previous_meter, step=1.0)
+current_meter = st.number_input("📥 ค่ามิเตอร์ปัจจุบัน", min_value=previous_meter, step=1)
 
 # === ปุ่มบันทึก ===
 if st.button("💾 บันทึกการใช้น้ำ"):
@@ -57,7 +62,7 @@ if st.button("💾 บันทึกการใช้น้ำ"):
     price = calculate_price(units_used)
 
     # บันทึกลง water_usage
-    supabase.table("water_usage").insert({
+    insert_result = supabase.table("water_usage").insert({
         "address": selected_address,
         "previous_meter": previous_meter,
         "current_meter": current_meter,
@@ -65,15 +70,12 @@ if st.button("💾 บันทึกการใช้น้ำ"):
         "price": price,
         "created_at": datetime.utcnow().isoformat()
     }).execute()
+    st.write(insert_result)  # แสดงผลลัพธ์ insert water_usage
 
     # อัปเดต previous_meter ใน houses
-    supabase.table("houses").update({
+    update_result = supabase.table("houses").update({
         "previous_meter": current_meter
     }).eq("id", selected_house["id"]).execute()
+    st.write(update_result)  # แสดงผลลัพธ์ update houses
 
     st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used} หน่วย = {price:.2f} บาท 💧")
-
-# === ฟังก์ชันคำนวณค่าน้ำ ===
-def calculate_price(units):
-    return units * 10  # หน่วยละ 10 บาท (ปรับได้ภายหลัง)
-
