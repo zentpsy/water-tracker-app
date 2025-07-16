@@ -42,19 +42,26 @@ address_list = [h.get("address", "").strip() for h in houses]
 selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 # === ค้นหาบ้านที่เลือก ===
-selected_house = next((h for h in houses if h.get("address", "").strip() == selected_address), None)
+selected_house = next(
+    (h for h in houses if h.get("address", "").strip() == selected_address.strip()),
+    None
+)
 
 if selected_house:
     previous_meter = selected_house.get("previous_meter", 0)
-    st.info(f"🔁 มิเตอร์ล่าสุด: {previous_meter}")
 else:
     st.error("ไม่พบข้อมูลบ้านที่เลือก")
     st.stop()
 
-# === กรอกมิเตอร์ปัจจุบัน ===
+# === กรอกค่ามิเตอร์ปัจจุบัน ===
 current_meter = st.number_input("📥 ค่ามิเตอร์ปัจจุบัน", min_value=previous_meter, step=1)
 
-# === คำนวณและแสดงผลลัพธ์แบบเรียลไทม์ ===
+# === แสดงค่ามิเตอร์ล่าสุด + ปัจจุบัน (บรรทัดเดียว)
+st.markdown(
+    f"**🔁 มิเตอร์ล่าสุด:** {previous_meter} &nbsp;&nbsp;|&nbsp;&nbsp; **📥 ค่ามิเตอร์ปัจจุบัน:** {int(current_meter)}"
+)
+
+# === แสดงผลแบบเรียลไทม์
 if current_meter > previous_meter:
     units_used = current_meter - previous_meter
     price = calculate_price(units_used)
@@ -66,7 +73,7 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
-# === ปุ่มบันทึก ===
+# === ปุ่มบันทึก
 if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
     # บันทึกลง water_usage
     insert_result = supabase.table("water_usage").insert({
