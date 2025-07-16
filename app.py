@@ -134,7 +134,7 @@ st.markdown(
         padding: 12px 36px;
         border-radius: 8px;
         border: none;
-        min-width: 150px;
+        min-width: 100px;
         transition: background-color 0.3s ease;
     }
     div.save-button > button:hover {
