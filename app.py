@@ -15,7 +15,6 @@ def calculate_price(units):
     return units * 10  # หน่วยละ 10 บาท (ปรับได้ภายหลัง)
 
 # === ดึงข้อมูลบ้านจาก Supabase ===
-@st.cache_data
 def load_houses():
     res = supabase.table("houses").select("*").execute()
     return res.data
