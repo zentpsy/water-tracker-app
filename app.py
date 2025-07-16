@@ -134,7 +134,7 @@ st.markdown(
         padding: 12px 36px;  /* เพิ่ม padding ซ้าย-ขวา */
         border-radius: 8px;
         border: none;
-        min-width: 250px;  /* บังคับความกว้างขั้นต่ำ */
+        min-width: 200px;  /* บังคับความกว้างขั้นต่ำ */
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
