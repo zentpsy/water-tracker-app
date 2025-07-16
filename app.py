@@ -122,19 +122,18 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
-# --- เพิ่ม CSS ปรับปุ่มบันทึกที่นี่ ---
 st.markdown(
     """
     <style>
-      div.save-button > button {
+    div.save-button > button {
         background-color: #2196F3;
         color: white;
         font-size: 18px;
         font-weight: bold;
-        padding: 12px 36px;  /* เพิ่ม padding ซ้าย-ขวา */
+        padding: 12px 36px;
         border-radius: 8px;
         border: none;
-        min-width: 200px;  /* บังคับความกว้างขั้นต่ำ */
+        min-width: 200px;
         transition: background-color 0.3s ease;
     }
     div.save-button > button:hover {
@@ -146,9 +145,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown('<div class="save-button">', unsafe_allow_html=True)
 
-# === ปุ่มบันทึก
-if <div class="save-button">st.button("💾 บันทึกการใช้น้ำ")<div class="save-button"> and current_meter > previous_meter:
+if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
     insert_result = supabase.table("water_usage").insert({
         "address": selected_address,
         "previous_meter": previous_meter,
@@ -163,3 +162,5 @@ if <div class="save-button">st.button("💾 บันทึกการใช้
     }).eq("id", selected_house["id"]).execute()
 
     st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
+
+st.markdown('</div>', unsafe_allow_html=True)
