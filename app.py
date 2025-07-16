@@ -126,7 +126,8 @@ else:
 st.markdown(
     """
     <style>
-    div.stButton > button:first-child:hover {
+    /* style ปกติของปุ่ม */
+    div.stButton > button:first-child {
         background-color: #2196F3;
         color: white;
         font-size: 18px;
@@ -137,6 +138,8 @@ st.markdown(
         min-width: 250px;
         transition: background-color 0.3s ease;
     }
+
+    /* style เมื่อ hover */
     div.stButton > button:first-child:hover {
         background-color: #1976D2;
         cursor: pointer;
@@ -145,6 +148,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 # === ปุ่มบันทึก
 col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
