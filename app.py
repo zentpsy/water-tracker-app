@@ -28,13 +28,13 @@ if not houses:
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
 # แบ่งเป็น 2 คอลัมน์: dropdown + ปุ่มเพิ่มบ้าน
-col1, col2 = st.columns([5, 1])
+col1, col2 = st.columns([4, 1])
 
 with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
 
 with col2:
-    if st.button("\u002B"):
+    if st.button("\u002B เพิ่มบ้าน"):
         st.write("กดปุ่ม + แล้ว")  # ทดสอบว่าแสดงหรือไม่
 
 
