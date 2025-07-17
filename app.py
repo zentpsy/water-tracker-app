@@ -34,7 +34,12 @@ address_list = [h.get("address", "").strip() for h in houses]
 col1, col2 = st.columns([3,1])
 
 with col1:
-    selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
+    selected_address = st.selectbox(
+    "🏠 เลือกบ้าน", 
+    options=address_list,
+    index=0,
+    placeholder="🔍 พิมพ์ค้นหาบ้าน...",
+)
 
 with col2:
     st.markdown("""
