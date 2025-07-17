@@ -33,9 +33,10 @@ if "show_add_form" not in st.session_state:
 # -- ตัวอย่าง: ข้อมูลที่ดึงมาจาก Supabase
 address_list = [h["address"] for h in houses if "address" in h]
 
+
 # -- ค้นหา + เลือกบ้าน
 st.markdown("### 🏠 เลือกบ้านที่ต้องการ")
-search_col1, search_col2 ,col2 = st.columns([3, 1, 1])
+search_col1, search_col2 = st.columns([3, 2])
 
 with search_col1:
     search_input = st.text_input("🔍 ค้นหาชื่อบ้าน", placeholder="พิมพ์บางส่วนของชื่อบ้าน")
@@ -50,20 +51,27 @@ with search_col2:
         selected_address = None
         st.warning("⚠️ ไม่พบชื่อบ้านที่ตรงกับคำค้นหา")
 
-# -- ดึงข้อมูลบ้านที่เลือก
-if selected_address:
-    selected_house = next(
-        (h for h in houses if h.get("address", "").strip() == selected_address.strip()),
-        None
+# ✅ เพิ่มปุ่ม "เพิ่มที่อยู่" แยกแถวใหม่ชัดเจน
+col_button = st.columns([1, 4, 1])[1]
+with col_button:
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            width: 160px;
+            height: 38px;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: #2C91E8;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
     )
-else:
-    selected_house = None  
-
-with col2:
-   
-    if st.button("เพิ่มที่อยู่ +"):
+    if st.button("➕ เพิ่มที่อยู่"):
         st.session_state.show_add_form = not st.session_state.show_add_form
-        
+
     st.markdown('</div>', unsafe_allow_html=True)
         
     # === ฟอร์มเพิ่มบ้านใหม่ ===
