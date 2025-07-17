@@ -31,7 +31,7 @@ if "show_add_form" not in st.session_state:
 
 # === รายชื่อบ้าน ===
 address_list = [h.get("address", "").strip() for h in houses]
-col1, col2 = st.columns([5,1])
+col1, col2 = st.columns([3,1])
 
 with col1:
     selected_address = st.selectbox("🏠 เลือกบ้าน", address_list)
