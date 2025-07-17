@@ -41,7 +41,7 @@ with col2:
         <style>
         .add-button-container button {
             margin-top: 11px;
-            width: 80px !important;
+            width: 40px !important;
             height: 38px !important;
             font-size: 18px !important;
             border-radius: 6px !important;
