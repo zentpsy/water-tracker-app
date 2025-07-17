@@ -34,16 +34,13 @@ address_list = [h.get("address", "").strip() for h in houses]
 col1, col2 = st.columns([3,1])
 
 with col1:
-    search_input = st.text_input("🔍 ค้นหาบ้าน", "")
-
-    # กรองที่อยู่ที่ตรงกับคำค้น
-    filtered_addresses = [addr for addr in address_list if search_input.strip() in addr]
-    
-    # แสดงผลเป็น radio หรือ selectbox อีกทีก็ได้
-    if filtered_addresses:
-        selected_address = st.radio("🏠 เลือกบ้านจากผลลัพธ์:", filtered_addresses)
+    search_input = st.text_input("🔍 ค้นหาบ้าน")
+    matches = [addr for addr in address_list if search_input.lower() in addr.lower()]
+    if matches:
+        selected = st.selectbox("🏠 เลือกบ้าน", matches)
     else:
-        st.warning("ไม่พบบ้านที่ตรงกับคำค้น")
+        st.info("กรุณาพิมพ์ชื่อบ้านที่ต้องการ")
+
     
 
 with col2:
