@@ -8,11 +8,13 @@ SUPABASE_KEY = st.secrets["supabase_key"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 st.set_page_config("💧 ระบบค่าน้ำ", layout="centered")
-st.title("💧คำนวณค่าน้ำ")
+st.title("💧 คำนวณค่าน้ำ")
+
 
 # === ฟังก์ชันคำนวณค่าน้ำ ===
 def calculate_price(units):
     return units * 10  # ปรับราคาต่อหน่วยได้ที่นี่
+
 
 # === ดึงข้อมูลบ้านจาก Supabase ===
 @st.cache_data(ttl=60)
@@ -30,18 +32,15 @@ if "show_add_form" not in st.session_state:
     st.session_state.show_add_form = False
 
 # === รายชื่อบ้าน ===
-# -- ตัวอย่าง: ข้อมูลที่ดึงมาจาก Supabase
 address_list = [h["address"] for h in houses if "address" in h]
 
-
-# -- ค้นหา + เลือกบ้าน
+# === ค้นหา + เลือกบ้าน ===
 st.markdown("### 🏠 เลือกบ้านที่ต้องการ")
 search_col1, search_col2 = st.columns([3, 2])
 
 with search_col1:
     search_input = st.text_input("🔍 ค้นหาชื่อบ้าน", placeholder="พิมพ์บางส่วนของชื่อบ้าน")
 
-# -- กรองชื่อบ้านที่ตรงกับคำค้นหา
 matches = [addr for addr in address_list if search_input.lower() in addr.lower()] if search_input else address_list
 
 with search_col2:
@@ -51,11 +50,10 @@ with search_col2:
         selected_address = None
         st.warning("⚠️ ไม่พบชื่อบ้านที่ตรงกับคำค้นหา")
 
-# ✅ เพิ่มปุ่ม "เพิ่มที่อยู่" แยกแถวใหม่ชัดเจน
+# === ปุ่มเพิ่มที่อยู่ใหม่ ===
 col_button = st.columns([1, 4, 1])[1]
 with col_button:
-    st.markdown(
-        """
+    st.markdown("""
         <style>
         div.stButton > button:first-child {
             width: 160px;
@@ -66,15 +64,11 @@ with col_button:
             color: white;
         }
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+        """, unsafe_allow_html=True)
+
     if st.button("➕ เพิ่มที่อยู่"):
         st.session_state.show_add_form = not st.session_state.show_add_form
 
-    st.markdown('</div>', unsafe_allow_html=True)
-        
-    # === ฟอร์มเพิ่มบ้านใหม่ ===
     if st.session_state.show_add_form:
         with st.form("add_house_form", clear_on_submit=True):
             new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
@@ -84,7 +78,7 @@ with col_button:
             if submitted:
                 clean_address = new_address.strip()
                 existing_addresses = [addr.strip() for addr in address_list]
-        
+
                 if clean_address == "":
                     st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
                 elif clean_address in existing_addresses:
@@ -96,7 +90,6 @@ with col_button:
                     }
                     try:
                         result = supabase.table("houses").insert(data_to_insert).execute()
-        
                         if result.data:
                             st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว")
                             st.session_state.show_add_form = False
@@ -145,11 +138,10 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
-
 # === ปุ่มบันทึก
-col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
+col1, col2, col3 = st.columns([2, 3, 2])
 with col1:
-     st.empty()
+    st.empty()
 with col2:
     if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
         insert_result = supabase.table("water_usage").insert({
@@ -167,4 +159,4 @@ with col2:
 
         st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
 with col3:
-     st.empty()
+    st.empty()
