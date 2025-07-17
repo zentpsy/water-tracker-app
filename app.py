@@ -49,9 +49,10 @@ with col2:
         </style>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="add-button-container">', unsafe_allow_html=True)
+    
     if st.button("เพิ่มที่อยู่ +"):
         st.session_state.show_add_form = not st.session_state.show_add_form
+        
     st.markdown('</div>', unsafe_allow_html=True)
     
 # === ฟอร์มเพิ่มบ้านใหม่ ===
