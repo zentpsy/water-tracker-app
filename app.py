@@ -43,7 +43,7 @@ with col2:
             margin-top: 11px;
             width: 40px !important;
             height: 38px !important;
-            font-size: 18px !important;
+            font-size: 10px !important;
             border-radius: 6px !important;
         }
         </style>
