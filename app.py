@@ -140,6 +140,7 @@ else:
 
 # === ปุ่มบันทึก
 col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
+with col1:
 with col2:
     if st.button("💾 บันทึกการใช้น้ำ") and current_meter > previous_meter:
         insert_result = supabase.table("water_usage").insert({
@@ -156,3 +157,4 @@ with col2:
         }).eq("id", selected_house["id"]).execute()
 
         st.success(f"✅ บันทึกสำเร็จ: ใช้ไป {units_used:.2f} หน่วย = {price:.2f} บาท 💧")
+with col3:
