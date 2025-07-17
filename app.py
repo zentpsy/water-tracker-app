@@ -65,38 +65,38 @@ with col2:
         st.session_state.show_add_form = not st.session_state.show_add_form
         
     st.markdown('</div>', unsafe_allow_html=True)
-    
-# === ฟอร์มเพิ่มบ้านใหม่ ===
-if st.session_state.show_add_form:
-    with st.form("add_house_form", clear_on_submit=True):
-        new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
-        new_previous_meter = st.number_input("📟 ค่ามิเตอร์ล่าสุด", min_value=0.0, step=0.1, format="%.2f")
-        submitted = st.form_submit_button("✅ เพิ่มบ้านใหม่")
-    
-        if submitted:
-            clean_address = new_address.strip()
-            existing_addresses = [addr.strip() for addr in address_list]
-    
-            if clean_address == "":
-                st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
-            elif clean_address in existing_addresses:
-                st.warning("⚠️ บ้านนี้มีอยู่แล้วในระบบ")
-            else:
-                data_to_insert = {
-                    "address": clean_address,
-                    "previous_meter": float(new_previous_meter)
-                }
-                try:
-                    result = supabase.table("houses").insert(data_to_insert).execute()
-    
-                    if result.data:
-                        st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว")
-                        st.session_state.show_add_form = False
-                        st.rerun()
-                    else:
-                        st.error(f"❌ เพิ่มบ้านไม่สำเร็จ: {result.error}")
-                except Exception as e:
-                    st.error(f"❌ เกิดข้อผิดพลาดขณะ insert: {e}")
+        
+    # === ฟอร์มเพิ่มบ้านใหม่ ===
+    if st.session_state.show_add_form:
+        with st.form("add_house_form", clear_on_submit=True):
+            new_address = st.text_input("🏡 ชื่อบ้าน (เช่น บ้านเลขที่ 999)")
+            new_previous_meter = st.number_input("📟 ค่ามิเตอร์ล่าสุด", min_value=0.0, step=0.1, format="%.2f")
+            submitted = st.form_submit_button("✅ เพิ่มบ้านใหม่")
+        
+            if submitted:
+                clean_address = new_address.strip()
+                existing_addresses = [addr.strip() for addr in address_list]
+        
+                if clean_address == "":
+                    st.warning("⚠️ กรุณากรอกชื่อบ้านให้ถูกต้อง")
+                elif clean_address in existing_addresses:
+                    st.warning("⚠️ บ้านนี้มีอยู่แล้วในระบบ")
+                else:
+                    data_to_insert = {
+                        "address": clean_address,
+                        "previous_meter": float(new_previous_meter)
+                    }
+                    try:
+                        result = supabase.table("houses").insert(data_to_insert).execute()
+        
+                        if result.data:
+                            st.success("✅ เพิ่มบ้านใหม่เรียบร้อยแล้ว")
+                            st.session_state.show_add_form = False
+                            st.rerun()
+                        else:
+                            st.error(f"❌ เพิ่มบ้านไม่สำเร็จ: {result.error}")
+                    except Exception as e:
+                        st.error(f"❌ เกิดข้อผิดพลาดขณะ insert: {e}")
 
 
 # === ค้นหาบ้านที่เลือก ===
