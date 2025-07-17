@@ -35,7 +35,7 @@ address_list = [h["address"] for h in houses if "address" in h]
 
 # -- ค้นหา + เลือกบ้าน
 st.markdown("### 🏠 เลือกบ้านที่ต้องการ")
-search_col1, search_col2 = st.columns([3, 1])
+search_col1, search_col2 ,col2 = st.columns([3, 1, 1])
 
 with search_col1:
     search_input = st.text_input("🔍 ค้นหาชื่อบ้าน", placeholder="พิมพ์บางส่วนของชื่อบ้าน")
