@@ -60,19 +60,7 @@ else:
     selected_house = None  
 
 with col2:
-    st.markdown("""
-        <style>
-        .add-button-container button {
-            margin-top: 11px;
-            width: 100px !important;
-            height: 30px !important;
-            font-size: 10px !important;
-            border-radius: 6px !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-    
+   
     if st.button("เพิ่มที่อยู่ +"):
         st.session_state.show_add_form = not st.session_state.show_add_form
         
@@ -149,31 +137,6 @@ elif current_meter == previous_meter:
 else:
     st.warning("❌ ค่ามิเตอร์ต้องไม่ต่ำกว่าค่าก่อนหน้า")
 
-# --- เพิ่ม CSS ปรับปุ่มบันทึกที่นี่ ---
-st.markdown(
-    """
-    <style>
-    div.stButton > button:first-child {
-        background-color: #2196F3;
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 12px 36px;
-        border-radius: 8px;
-        border: none;
-        min-width: 250px;
-        width: 100%;  /* ทำให้ยาวเต็มคอลัมน์ */
-        transition: background-color 0.3s ease;
-    }
-
-    div.stButton > button:first-child:hover {
-        background-color: #1976D2;
-        cursor: pointer;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # === ปุ่มบันทึก
 col1, col2, col3 = st.columns([2, 3, 2])  # ปรับความกว้างคอลัมน์ตามต้องการ
