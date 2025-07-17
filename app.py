@@ -30,18 +30,34 @@ if "show_add_form" not in st.session_state:
     st.session_state.show_add_form = False
 
 # === รายชื่อบ้าน ===
-address_list = [h.get("address", "").strip() for h in houses]
-col1, col2 = st.columns([3,1])
+# -- ตัวอย่าง: ข้อมูลที่ดึงมาจาก Supabase
+address_list = [h["address"] for h in houses if "address" in h]
 
-with col1:
-    search_input = st.text_input("🔍 ค้นหาบ้าน")
-    matches = [addr for addr in address_list if search_input.lower() in addr.lower()]
+# -- ค้นหา + เลือกบ้าน
+st.markdown("### 🏠 เลือกบ้านที่ต้องการ")
+search_col1, search_col2 = st.columns([3, 1])
+
+with search_col1:
+    search_input = st.text_input("🔍 ค้นหาชื่อบ้าน", placeholder="พิมพ์บางส่วนของชื่อบ้าน")
+
+# -- กรองชื่อบ้านที่ตรงกับคำค้นหา
+matches = [addr for addr in address_list if search_input.lower() in addr.lower()] if search_input else address_list
+
+with search_col2:
     if matches:
-        selected = st.selectbox("🏠 เลือกบ้าน", matches)
+        selected_address = st.selectbox(" ", matches, label_visibility="collapsed")
     else:
-        st.info("กรุณาพิมพ์ชื่อบ้านที่ต้องการ")
+        selected_address = None
+        st.warning("⚠️ ไม่พบชื่อบ้านที่ตรงกับคำค้นหา")
 
-    
+# -- ดึงข้อมูลบ้านที่เลือก
+if selected_address:
+    selected_house = next(
+        (h for h in houses if h.get("address", "").strip() == selected_address.strip()),
+        None
+    )
+else:
+    selected_house = None  
 
 with col2:
     st.markdown("""
